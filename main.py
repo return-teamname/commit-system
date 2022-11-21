@@ -1,9 +1,16 @@
 import msvcrt
 import sys
 import os
+from classes.commit import *
+from functions.initrepo import *
+
 
 
 def main():
+    createRepo = initRepo("testing/")
+    
+    print("[Init] repo status:", "success" if createRepo else "failed")
+
     name = input("Adja meg a nevét ")
     os.system("cls")
     while True:
@@ -28,6 +35,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-    
