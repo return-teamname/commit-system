@@ -3,7 +3,6 @@ from datetime import datetime
 from enum import Enum
 import os
 from typing import List
-from uuid import *
 
 
 class CommitChangeType(Enum):
@@ -17,30 +16,29 @@ class CommitChange:
         self.file_name = file_name
         self.date = date
 
-    def exportChanges(self):
-        return str(self.type.value) + " " + str(self.file_name) + " " + str(self.date) + "\n"
+    def strChanges(self):
+        return str(self.type.value) + " " + str(self.file_name) + " " + datetime.strftime(self.date, "%Y.%m.%d %H.%M.%S") + "\n"
 
 class CommitParameters:
-    def __init__(self, folder: str):
+    def __init__(self, folder: str, date: datetime = datetime.now()):
         self.folder = folder
-        self.id = uuid4()
-        self.date = datetime.now()
+        self.date = date
 
-    def createNew(self, parent: str, writer: str, desc: str, changes: List[CommitChange]):
+    def newCommit(self, parent: int, writer: str, desc: str, changes: List[CommitChange]):
         self.parent = parent
         self.writer = writer
         self.desc = desc
         self.changes = changes
         
-    def exportCommit(self):
-        with open(self.folder + ".dusza/" + ("1" if self.parent == "-" else self.parent) + ".commit/commit.details", "w", encoding="utf-8") as f:
-            f.write("Szulo: " + self.parent + "\n")
+    def exportCommitDetails(self):
+        with open(self.folder + ".dusza/" + ("1" if self.parent == 0 else str(self.parent)) + ".commit/commit.details", "w", encoding="utf-8") as f:
+            f.write("Szulo: " + str(self.parent) + "\n")
             f.write("Szerzo: " + self.writer + "\n")
-            f.write("Datum: " + str(self.date) + "\n")
+            f.write("Datum: " + datetime.strftime(self.date, "%Y.%m.%d %H.%M.%S") + "\n")
             f.write("Commit leiras: " + self.desc + "\n")
             f.write("Valtozott:\n")
             for change in self.changes:
-                f.write(change.exportChanges())
+                f.write(change.strChanges())
 
     # def parseToJson(self, raw: str):
     #     lines = raw.split("\n")

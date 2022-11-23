@@ -27,13 +27,10 @@ def initRepo(folder: str, writer = "Béla") -> bool:
         changes.append(CommitChange(CommitChangeType.NEW, wopath, datetime.fromtimestamp(os.path.getmtime(file))))
     
     commit = CommitParameters(folder)
-    commit.createNew("-", writer, "A projekt elso valtozata, mely tartalmazza az alapveto funkciokat.", changes)
-    commit.exportCommit()
+    commit.newCommit(0, writer, "A projekt elso valtozata, mely tartalmazza az alapveto funkciokat.", changes)
+    commit.exportCommitDetails()
 
     # for faster testing
     #shutil.rmtree(folder + ".dusza", ignore_errors=True)
                 
     return True
-
-def createCommitDetails():
-    pass
